@@ -489,12 +489,29 @@ function HomePage() {
 
 function CohortsSection() {
   const [activeCategory, setActiveCategory] = useState<CohortCategory | "All Topics">("All Topics");
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
 
-  const filteredCohorts = activeCategory === "All Topics"
+  const filteredCohorts = (activeCategory === "All Topics"
     ? allCohortData
-    : allCohortData.filter((c) => c.category === activeCategory);
+    : allCohortData.filter((c) => c.category === activeCategory)
+  ).slice(0, 5);
 
   const categories: Array<CohortCategory | "All Topics"> = ["All Topics", ...COHORT_CATEGORIES];
+
+  // Auto-scroll the category bar
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    let direction = 1;
+    const interval = setInterval(() => {
+      if (isPaused) return;
+      el.scrollLeft += direction * 0.5;
+      if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 1) direction = -1;
+      if (el.scrollLeft <= 0) direction = 1;
+    }, 30);
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   return (
     <section id="cohorts" className="py-24 px-6 relative bg-[#FAFAFA]">
@@ -508,7 +525,13 @@ function CohortsSection() {
               Hundreds of communities are learning right now. Find your group.
             </p>
           </div>
-          <div className="flex items-center gap-2 overflow-x-auto pb-2">
+          <div
+            ref={scrollRef}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
             {categories.map((cat) => (
               <button
                 key={cat}
