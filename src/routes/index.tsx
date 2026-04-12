@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/Reveal";
-import { getFeaturedCohorts, formatViews } from "@/data";
+import { cohorts as allCohortData, formatViews } from "@/data";
+import { COHORT_CATEGORIES, type CohortCategory } from "@/domain/cohort/cohort.types";
 import {
   Layers,
   ArrowRight,
