@@ -549,6 +549,7 @@ function CohortsSection() {
   );
 }
 
+function CohortPreviewCard({
   badge,
   badgeClass,
   icon,
