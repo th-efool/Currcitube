@@ -109,7 +109,7 @@ function HomePage() {
           </Reveal>
 
           {/* SECTION 1: HERO - PLATFORM ENTRY */}
-<header className="relative pt-24 pb-16 lg:pt-32 lg:pb-20 overflow-hidden flex flex-col items-center border-b border-neutral-200 bg-white">
+<div className="relative pt-24 pb-16 lg:pt-32 lg:pb-20 overflow-hidden flex flex-col items-center border-b border-neutral-200 bg-white">
   <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-neutral-100 rounded-full blur-[100px] opacity-50 pointer-events-none" />
   <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-neutral-50 rounded-full blur-[120px] opacity-60 pointer-events-none" />
 
@@ -332,7 +332,7 @@ function HomePage() {
       </div>
     </Reveal>
         </div>
-      </header>
+      </div>
         </div>
       </header>
 
