@@ -499,16 +499,17 @@ function CohortsSection() {
 
   const categories: Array<CohortCategory | "All Topics"> = ["All Topics", ...COHORT_CATEGORIES];
 
-  // Auto-scroll the category bar
+  // Infinite auto-scroll: when reaching the midpoint (duplicate), reset to start
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-    let direction = 1;
     const interval = setInterval(() => {
       if (isPaused) return;
-      el.scrollLeft += direction * 0.5;
-      if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 1) direction = -1;
-      if (el.scrollLeft <= 0) direction = 1;
+      el.scrollLeft += 0.5;
+      // When we've scrolled past the first set of buttons, jump back seamlessly
+      if (el.scrollLeft >= el.scrollWidth / 2) {
+        el.scrollLeft = 0;
+      }
     }, 30);
     return () => clearInterval(interval);
   }, [isPaused]);
@@ -532,9 +533,10 @@ function CohortsSection() {
             className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            {categories.map((cat) => (
+            {/* Duplicate categories for seamless infinite scroll */}
+            {[...categories, ...categories].map((cat, i) => (
               <button
-                key={cat}
+                key={`${cat}-${i}`}
                 onClick={() => setActiveCategory(cat)}
                 className={`px-4 py-2 text-xs font-medium rounded-full shrink-0 transition-colors ${
                   activeCategory === cat
