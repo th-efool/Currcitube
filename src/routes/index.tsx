@@ -199,41 +199,74 @@ function HomePage() {
                 </div>
               </div>
               {/* Visual mockup */}
-              <div className="w-full lg:w-[380px] aspect-[4/3] rounded-2xl bg-neutral-50 border border-neutral-200 relative overflow-hidden group order-1 lg:order-2 shadow-sm">
+              <div className="w-full lg:w-[380px] aspect-[4/3] rounded-2xl bg-gradient-to-br from-neutral-50 via-white to-amber-50/40 border border-neutral-200 relative overflow-hidden group order-1 lg:order-2 shadow-sm">
+                {/* Subtle decorative blobs */}
+                <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-amber-100/40 blur-2xl animate-[pulse_4s_ease-in-out_infinite]" />
+                <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-emerald-100/30 blur-2xl animate-[pulse_5s_ease-in-out_infinite_1s]" />
+
                 <div className="absolute inset-0 p-6 flex flex-col gap-3">
-                  <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-neutral-100 shadow-sm">
-                    <div className="w-6 h-6 rounded-full bg-neutral-900 text-white flex items-center justify-center text-[10px] font-medium">
-                      1
+                  {/* Lesson 1 — completed */}
+                  <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-neutral-100 shadow-sm animate-fade-in" style={{ animationDelay: "0.2s", animationFillMode: "both" }}>
+                    <div className="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-medium shadow-sm">
+                      <CheckCheck className="w-3.5 h-3.5" />
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <p className="text-xs font-medium text-neutral-900">
                         The BLUF Principle
                       </p>
                       <p className="text-[10px] text-neutral-500">Day 1 • 12 mins</p>
                     </div>
+                    <span className="text-[9px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Done</span>
                   </div>
-                  <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-neutral-100 shadow-sm">
-                    <div className="w-6 h-6 rounded-full bg-white border border-neutral-200 text-neutral-400 flex items-center justify-center text-[10px] font-medium">
+
+                  {/* Lesson 2 — in progress */}
+                  <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-amber-200/60 shadow-sm ring-1 ring-amber-100/50 animate-fade-in" style={{ animationDelay: "0.4s", animationFillMode: "both" }}>
+                    <div className="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center text-[10px] font-bold shadow-sm animate-[pulse_2s_ease-in-out_infinite]">
                       2
                     </div>
-                    <div>
-                      <p className="text-xs font-medium text-neutral-700">
+                    <div className="flex-1">
+                      <p className="text-xs font-medium text-neutral-900">
                         Structuring the Memo
                       </p>
-                      <p className="text-[10px] text-neutral-400">Day 2 • 15 mins</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <div className="flex-1 h-1 bg-neutral-100 rounded-full overflow-hidden">
+                          <div className="h-full w-[60%] bg-amber-400 rounded-full" />
+                        </div>
+                        <p className="text-[9px] text-amber-600 font-medium">60%</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-3 bg-neutral-50/50 rounded-xl border border-neutral-100">
-                    <div className="w-6 h-6 rounded-full bg-transparent flex items-center justify-center text-neutral-300">
+
+                  {/* Lesson 3 — locked */}
+                  <div className="flex items-center gap-3 p-3 bg-neutral-50/80 rounded-xl border border-neutral-100 animate-fade-in" style={{ animationDelay: "0.6s", animationFillMode: "both" }}>
+                    <div className="w-7 h-7 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-300">
                       <Lock className="w-3.5 h-3.5" />
                     </div>
                     <div>
-                      <div className="w-24 h-2.5 bg-neutral-200 rounded-full mb-1.5" />
+                      <div className="w-28 h-2.5 bg-neutral-200/80 rounded-full mb-1.5" />
                       <div className="w-16 h-2 bg-neutral-100 rounded-full" />
                     </div>
                   </div>
+
+                  {/* Lesson 4 — locked skeleton */}
+                  <div className="flex items-center gap-3 p-3 bg-neutral-50/40 rounded-xl border border-neutral-100/60 opacity-50 animate-fade-in" style={{ animationDelay: "0.8s", animationFillMode: "both" }}>
+                    <div className="w-7 h-7 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-200">
+                      <Lock className="w-3 h-3" />
+                    </div>
+                    <div>
+                      <div className="w-20 h-2.5 bg-neutral-100 rounded-full mb-1.5" />
+                      <div className="w-12 h-2 bg-neutral-50 rounded-full" />
+                    </div>
+                  </div>
                 </div>
-                <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+
+                {/* Streak badge floating */}
+                <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm border border-neutral-200 shadow-sm animate-fade-in" style={{ animationDelay: "1s", animationFillMode: "both" }}>
+                  <span className="text-xs">🔥</span>
+                  <span className="text-[10px] font-semibold text-neutral-900">5 day streak</span>
+                </div>
+
+                <div className="absolute bottom-0 inset-x-0 h-20 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
               </div>
             </div>
           </Reveal>
