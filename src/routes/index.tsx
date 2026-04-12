@@ -267,46 +267,7 @@ function HomePage() {
         </Reveal>
       </section>
 
-      <section id="cohorts" className="py-24 px-6 relative bg-[#FAFAFA]">
-        <Reveal className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-neutral-900 mb-2">
-                Featured cohorts.
-              </h2>
-              <p className="text-neutral-500 text-sm font-light">
-                Hand-picked paths our community loves most.
-              </p>
-            </div>
-            <Link
-              to="/explore"
-              className="text-sm font-medium text-neutral-900 flex items-center gap-1 hover:gap-2 transition-all"
-            >
-              Browse all <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {getFeaturedCohorts().map((cohort) => (
-              <Link key={cohort.id} to="/cohort/$cohortId" params={{ cohortId: cohort.id }}>
-                <CohortPreviewCard
-                  badge="Featured"
-                  badgeClass="bg-neutral-900 text-white"
-                  icon={<span className="text-3xl">{cohort.thumbnailEmoji}</span>}
-                  tags={cohort.tags.slice(0, 3)}
-                  title={cohort.title}
-                  desc={cohort.description}
-                  progressLabel={formatViews(cohort.views)}
-                  progressDetail={`${cohort.avgProgress}% avg`}
-                  progressPct={cohort.avgProgress}
-                  members={cohort.members >= 1000 ? `${(cohort.members / 1000).toFixed(1)}k members` : `${cohort.members} members`}
-                  cta="View Path"
-                />
-              </Link>
-            ))}
-          </div>
-        </Reveal>
-      </section>
+      <CohortsSection />
 
       {/* ── MICROLEARNING MODE ── */}
       <section id="platform" className="py-32 px-6 border-t border-neutral-200 relative bg-white overflow-hidden">
