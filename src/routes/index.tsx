@@ -533,9 +533,10 @@ function CohortsSection() {
             className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            {categories.map((cat) => (
+            {/* Duplicate categories for seamless infinite scroll */}
+            {[...categories, ...categories].map((cat, i) => (
               <button
-                key={cat}
+                key={`${cat}-${i}`}
                 onClick={() => setActiveCategory(cat)}
                 className={`px-4 py-2 text-xs font-medium rounded-full shrink-0 transition-colors ${
                   activeCategory === cat
