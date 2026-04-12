@@ -3,12 +3,10 @@ import {
   Link,
   createRootRouteWithContext,
   HeadContent,
-  Scripts,
 } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppProvider } from "@/lib/store";
 import { Toaster } from "@/components/ui/sonner";
-import appCss from "../styles.css?url";
 
 interface RouterContext {
   queryClient: QueryClient;
@@ -38,29 +36,18 @@ function NotFoundComponent() {
   );
 }
 
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
-    <QueryClientProvider client={queryClient}>
-      <AppProvider>
-        <Outlet />
-        <Toaster />
-      </AppProvider>
-    </QueryClientProvider>
+    <>
+      <HeadContent />
+      <QueryClientProvider client={queryClient}>
+        <AppProvider>
+          <Outlet />
+          <Toaster />
+        </AppProvider>
+      </QueryClientProvider>
+    </>
   );
 }
 
@@ -77,13 +64,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-    ],
   }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
 });
