@@ -331,7 +331,8 @@ function HomePage() {
         </div>
       </div>
     </Reveal>
-
+        </div>
+      </header>
         </div>
       </header>
 
