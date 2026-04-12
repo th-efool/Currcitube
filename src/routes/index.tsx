@@ -499,16 +499,17 @@ function CohortsSection() {
 
   const categories: Array<CohortCategory | "All Topics"> = ["All Topics", ...COHORT_CATEGORIES];
 
-  // Auto-scroll the category bar
+  // Infinite auto-scroll: when reaching the midpoint (duplicate), reset to start
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-    let direction = 1;
     const interval = setInterval(() => {
       if (isPaused) return;
-      el.scrollLeft += direction * 0.5;
-      if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 1) direction = -1;
-      if (el.scrollLeft <= 0) direction = 1;
+      el.scrollLeft += 0.5;
+      // When we've scrolled past the first set of buttons, jump back seamlessly
+      if (el.scrollLeft >= el.scrollWidth / 2) {
+        el.scrollLeft = 0;
+      }
     }, 30);
     return () => clearInterval(interval);
   }, [isPaused]);
