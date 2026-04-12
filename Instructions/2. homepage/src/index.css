@@ -1,0 +1,145 @@
+/* Custom Styles from Source HTML */
+body {
+  font-family: 'Geist', sans-serif;
+}
+
+/* Clean Glass/Nav - Subtly translucent solid */
+.solid-nav {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Material Panels - Clean, Light Borders */
+.surface-panel {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 24px -6px rgba(0, 0, 0, 0.03);
+}
+
+.surface-panel-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.surface-panel-hover:hover {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.06);
+}
+
+/* Animations */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee { animation: marquee 40s linear infinite; }
+
+/* Mask for Feed */
+.mask-feed {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
+/* 
+  Microlearning Structured Animation Flow 
+  Creates a precise loop: focus, complete, move next 
+*/
+@keyframes feedScrollStructured {
+  0%, 25% { transform: translateY(0); }
+  33%, 58% { transform: translateY(-160px); } /* Card H + Gap */
+  66%, 91% { transform: translateY(-320px); }
+  100% { transform: translateY(-480px); }
+}
+.animate-feed-structured {
+  animation: feedScrollStructured 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Card Focus States */
+@keyframes cState1 { 
+  0%, 25% { transform: scale(1); opacity: 1; border-color: #e5e5e5; box-shadow: 0 12px 32px -8px rgba(0,0,0,0.08); filter: grayscale(0%); } 
+  33%, 100% { transform: scale(0.95); opacity: 0.4; border-color: transparent; box-shadow: none; filter: grayscale(100%); } 
+}
+@keyframes cState2 { 
+  0%, 25% { transform: scale(0.95); opacity: 0.4; border-color: transparent; box-shadow: none; filter: grayscale(100%); } 
+  33%, 58% { transform: scale(1); opacity: 1; border-color: #e5e5e5; box-shadow: 0 12px 32px -8px rgba(0,0,0,0.08); filter: grayscale(0%); } 
+  66%, 100% { transform: scale(0.95); opacity: 0.4; border-color: transparent; box-shadow: none; filter: grayscale(100%); } 
+}
+@keyframes cState3 { 
+  0%, 58% { transform: scale(0.95); opacity: 0.4; border-color: transparent; box-shadow: none; filter: grayscale(100%); } 
+  66%, 91% { transform: scale(1); opacity: 1; border-color: #e5e5e5; box-shadow: 0 12px 32px -8px rgba(0,0,0,0.08); filter: grayscale(0%); } 
+  100% { transform: scale(0.95); opacity: 0.4; border-color: transparent; box-shadow: none; filter: grayscale(100%); } 
+}
+@keyframes cState4 { 
+  0%, 91% { transform: scale(0.95); opacity: 0.4; border-color: transparent; box-shadow: none; filter: grayscale(100%); } 
+  100% { transform: scale(1); opacity: 1; border-color: #e5e5e5; box-shadow: 0 12px 32px -8px rgba(0,0,0,0.08); filter: grayscale(0%); } 
+}
+
+.c-state-1 { animation: cState1 12s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+.c-state-2 { animation: cState2 12s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+.c-state-3 { animation: cState3 12s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+.c-state-4 { animation: cState4 12s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+
+/* Internal Card Progress Fills */
+@keyframes pFill1 { 0%, 5% { width: 0%; } 20%, 100% { width: 100%; } }
+@keyframes pFill2 { 0%, 38% { width: 0%; } 53%, 100% { width: 100%; } }
+@keyframes pFill3 { 0%, 71% { width: 0%; } 86%, 100% { width: 100%; } }
+@keyframes pFill4 { 0%, 100% { width: 0%; } }
+
+.p-fill-1 { animation: pFill1 12s ease-out infinite; }
+.p-fill-2 { animation: pFill2 12s ease-out infinite; }
+.p-fill-3 { animation: pFill3 12s ease-out infinite; }
+.p-fill-4 { animation: pFill4 12s ease-out infinite; }
+
+/* Checkmark Pops */
+@keyframes cPop1 { 0%, 18% { transform: scale(0); opacity: 0; } 20%, 100% { transform: scale(1); opacity: 1; } }
+@keyframes cPop2 { 0%, 51% { transform: scale(0); opacity: 0; } 53%, 100% { transform: scale(1); opacity: 1; } }
+@keyframes cPop3 { 0%, 84% { transform: scale(0); opacity: 0; } 86%, 100% { transform: scale(1); opacity: 1; } }
+@keyframes cPop4 { 0%, 100% { transform: scale(0); opacity: 0; } }
+
+.c-pop-1 { animation: cPop1 12s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite; }
+.c-pop-2 { animation: cPop2 12s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite; }
+.c-pop-3 { animation: cPop3 12s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite; }
+.c-pop-4 { animation: cPop4 12s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite; }
+
+/* Global Progress Header */
+@keyframes gProgFill {
+  0%, 5% { width: 16%; }
+  20%, 38% { width: 20%; }
+  53%, 71% { width: 24%; }
+  86%, 100% { width: 28%; }
+}
+.g-prog-fill { animation: gProgFill 12s ease-in-out infinite; }
+
+/* Scroll Reveal - Upward Fade */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Custom Scrollbar - Light Mode */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+/* Pulse Animation for Live Status */
+@keyframes subtlePulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+.animate-live-pulse {
+  animation: subtlePulse 2s ease-in-out infinite;
+}

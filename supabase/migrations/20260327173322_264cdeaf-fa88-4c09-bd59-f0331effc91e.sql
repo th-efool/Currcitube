@@ -1,1 +1,0 @@
-ALTER TABLE public.asset_categories ADD COLUMN residual_value_percent numeric NOT NULL DEFAULT 0;
