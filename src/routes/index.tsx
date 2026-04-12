@@ -1,8 +1,6 @@
-import { useState, useRef, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/Reveal";
-import { cohorts as allCohortData, formatViews } from "@/data";
-import { COHORT_CATEGORIES, type CohortCategory } from "@/domain/cohort/cohort.types";
+import { getFeaturedCohorts, formatViews } from "@/data";
 import {
   Layers,
   ArrowRight,
@@ -108,231 +106,135 @@ function HomePage() {
             </p>
           </Reveal>
 
-          {/* SECTION 1: HERO - PLATFORM ENTRY */}
-<div className="relative pt-24 pb-16 lg:pt-32 lg:pb-20 overflow-hidden flex flex-col items-center border-b border-neutral-200 bg-white">
-  <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-neutral-100 rounded-full blur-[100px] opacity-50 pointer-events-none" />
-  <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-neutral-50 rounded-full blur-[120px] opacity-60 pointer-events-none" />
-
-  <div className="max-w-5xl mx-auto px-6 w-full z-10 relative flex flex-col items-center">
-    <Reveal className="mb-10 text-center max-w-3xl">
-      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-50 border border-neutral-200 text-xs font-medium text-neutral-600 mb-5 shadow-sm">
-        <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-live-pulse" />
-        3,402 learners active now
-      </div>
-
-      <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-neutral-900 mb-5 leading-tight">
-        Structured learning,
-        <br />
-        driven by community.
-      </h1>
-
-      <p className="text-base md:text-lg text-neutral-500 font-light max-w-xl mx-auto leading-relaxed">
-        Join public cohorts across hundreds of topics. Commit to a daily path,
-        learn alongside peers, and finally finish what you start.
-      </p>
-    </Reveal>
-
-    {/* Featured Live Cohort Widget */}
-    <Reveal
-      delay="100ms"
-      className="surface-panel rounded-[2rem] w-full overflow-hidden shadow-sm border border-neutral-200"
-    >
-      {/* Header */}
-      <div className="px-5 py-4 md:px-7 md:py-5 border-b border-neutral-100 bg-neutral-50/60">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-full bg-white border border-neutral-200 shadow-sm flex items-center justify-center text-neutral-600">
-                <iconify-icon icon="solar:pen-new-square-linear" stroke-width="1.5" />
-              </div>
-              <div>
-                <h2 className="text-sm font-medium text-neutral-900">
-                  Featured Public Cohort
-                </h2>
-                <p className="text-xs text-neutral-500">
-                  Business &amp; Communication
-                </p>
-              </div>
-            </div>
-
-            <div className="hidden md:block w-px h-8 bg-neutral-200" />
-
-            <div className="flex items-center gap-3">
-              <div className="flex -space-x-2">
-                <div className="w-6 h-6 rounded-full bg-neutral-200 border-2 border-white" />
-                <div className="w-6 h-6 rounded-full bg-neutral-300 border-2 border-white" />
-                <div className="w-6 h-6 rounded-full bg-neutral-400 border-2 border-white" />
-                <div className="w-6 h-6 rounded-full bg-neutral-100 border-2 border-white flex items-center justify-center">
-                  <span className="text-[8px] font-medium text-neutral-600">
-                    +124
+          {/* Featured Cohort Widget */}
+          <Reveal delay="100ms" className="surface-panel rounded-[2rem] w-full relative overflow-hidden shadow-sm">
+            {/* Header */}
+            <div className="px-6 py-4 md:px-8 md:py-6 border-b border-neutral-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-neutral-50/50">
+              <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-10 h-10 rounded-full bg-white border border-neutral-200 shadow-sm flex items-center justify-center text-neutral-600">
+                    <Presentation className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-medium text-neutral-900">
+                      Featured Public Cohort
+                    </h2>
+                    <p className="text-xs text-neutral-500">
+                      Business &amp; Communication
+                    </p>
+                  </div>
+                </div>
+                <div className="hidden md:block w-px h-8 bg-neutral-200" />
+                <div className="flex items-center gap-3">
+                  <div className="flex -space-x-2">
+                    <div className="w-6 h-6 rounded-full bg-neutral-200 border-2 border-white" />
+                    <div className="w-6 h-6 rounded-full bg-neutral-300 border-2 border-white" />
+                    <div className="w-6 h-6 rounded-full bg-neutral-400 border-2 border-white" />
+                    <div className="w-6 h-6 rounded-full bg-neutral-100 border-2 border-white flex items-center justify-center">
+                      <span className="text-[8px] font-medium text-neutral-600">+124</span>
+                    </div>
+                  </div>
+                  <span className="text-xs text-neutral-500 font-medium">
+                    Members Enrolled
                   </span>
                 </div>
               </div>
-              <div>
-                <p className="text-xs font-medium text-neutral-900">
-                  124 members already inside
+              <div className="flex items-center gap-3 text-xs font-medium text-neutral-500">
+                <span className="px-2.5 py-1 bg-white border border-neutral-200 rounded-md shadow-sm text-neutral-900">
+                  Enrolling Now
+                </span>
+                <span>Starts in 2 Days</span>
+              </div>
+            </div>
+
+            {/* Body */}
+            <div className="p-6 md:p-8 flex flex-col lg:flex-row items-center gap-8 lg:gap-12 bg-white">
+              <div className="flex-1 w-full order-2 lg:order-1">
+                <h3 className="text-3xl md:text-4xl font-medium tracking-tight text-neutral-900 mb-3 leading-tight">
+                  Clear Business Writing
+                </h3>
+                <p className="text-sm text-neutral-500 mb-8 max-w-md font-light leading-relaxed">
+                  Master the art of concise communication. Write emails, memos,
+                  and proposals that get read and drive action without the fluff.
                 </p>
-                <p className="text-[11px] text-neutral-500">
-                  Fast-moving cohort, new enrollments open
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 text-xs font-medium text-neutral-500">
-            <span className="px-2.5 py-1 bg-white border border-neutral-200 rounded-md shadow-sm text-neutral-900">
-              Enrolling Now
-            </span>
-            <span>Starts in 2 Days</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Body */}
-      <div className="p-5 md:p-7 bg-white">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.85fr] gap-6 lg:gap-8 items-stretch">
-          {/* Content Side */}
-          <div className="flex flex-col justify-between min-w-0">
-            <div>
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-neutral-50 border border-neutral-200 text-[11px] font-medium text-neutral-600 mb-4">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                Guided cohort · highly structured
-              </div>
-
-              <h3 className="text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight text-neutral-900 mb-3 leading-tight">
-                Clear Business Writing
-              </h3>
-
-              <p className="text-sm text-neutral-500 max-w-md font-light leading-relaxed mb-5">
-                Master the art of concise communication. Write emails, memos,
-                and proposals that get read and drive action without the fluff.
-              </p>
-
-              {/* Compact stats */}
-              <div className="grid grid-cols-3 gap-3 max-w-xl mb-5">
-                <div className="rounded-2xl bg-neutral-50 border border-neutral-200 px-4 py-3 shadow-sm">
-                  <p className="text-[10px] uppercase tracking-wider text-neutral-400 mb-1">
-                    Duration
-                  </p>
-                  <p className="text-sm font-medium text-neutral-900">21 Days</p>
-                </div>
-                <div className="rounded-2xl bg-neutral-50 border border-neutral-200 px-4 py-3 shadow-sm">
-                  <p className="text-[10px] uppercase tracking-wider text-neutral-400 mb-1">
-                    Pace
-                  </p>
-                  <p className="text-sm font-medium text-neutral-900">15 min/day</p>
-                </div>
-                <div className="rounded-2xl bg-neutral-50 border border-neutral-200 px-4 py-3 shadow-sm">
-                  <p className="text-[10px] uppercase tracking-wider text-neutral-400 mb-1">
-                    Format
-                  </p>
-                  <p className="text-sm font-medium text-neutral-900 flex items-center gap-1">
-                    <iconify-icon
-                      icon="solar:users-group-rounded-linear"
-                      class="text-neutral-400"
-                      stroke-width="1.5"
-                    />
-                    Guided Cohort
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button className="h-11 px-8 rounded-full text-sm font-medium transition-all bg-neutral-900 text-white hover:bg-neutral-800 shadow-sm flex items-center justify-center gap-2 hover:scale-105 active:scale-95">
-                Join Cohort
-              </button>
-              <button className="h-11 px-6 rounded-full text-sm font-medium transition-all border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50 shadow-sm flex items-center justify-center gap-2">
-                View Curriculum
-              </button>
-            </div>
-          </div>
-
-          {/* Visual Side */}
-          <div className="relative rounded-2xl bg-neutral-50 border border-neutral-200 overflow-hidden shadow-sm min-h-[260px] lg:min-h-[320px]">
-            <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-amber-100/40 blur-3xl" />
-            <div className="absolute -bottom-10 -left-10 w-28 h-28 rounded-full bg-emerald-100/30 blur-3xl" />
-
-            <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm border border-neutral-200 shadow-sm">
-              <span className="text-xs">🔥</span>
-              <span className="text-[10px] font-semibold text-neutral-900">
-                5 day streak
-              </span>
-            </div>
-
-            <div className="absolute inset-0 p-5 flex flex-col justify-between">
-              {/* Lesson preview stack */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-neutral-100 shadow-sm">
-                  <div className="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-medium shadow-sm">
-                    <iconify-icon icon="solar:check-circle-linear" stroke-width="1.8" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium text-neutral-900 truncate">
-                      The BLUF Principle
+                <div className="mb-8 flex gap-6 border-y border-neutral-100 py-4">
+                  <div>
+                    <p className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider mb-1">
+                      Duration
                     </p>
-                    <p className="text-[10px] text-neutral-500">
-                      Day 1 • 12 mins
+                    <p className="text-sm font-medium text-neutral-900">21 Days</p>
+                  </div>
+                  <div className="w-px bg-neutral-100" />
+                  <div>
+                    <p className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider mb-1">
+                      Pace
+                    </p>
+                    <p className="text-sm font-medium text-neutral-900">
+                      15 min / day
                     </p>
                   </div>
-                  <span className="text-[9px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
-                    Done
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-amber-200/60 shadow-sm ring-1 ring-amber-100/50">
-                  <div className="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center text-[10px] font-bold shadow-sm">
-                    2
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium text-neutral-900 truncate">
-                      Structuring the Memo
+                  <div className="w-px bg-neutral-100" />
+                  <div>
+                    <p className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider mb-1">
+                      Format
                     </p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <div className="flex-1 h-1 bg-neutral-100 rounded-full overflow-hidden">
-                        <div className="h-full w-[60%] bg-amber-400 rounded-full" />
-                      </div>
-                      <p className="text-[9px] text-amber-600 font-medium">60%</p>
+                    <p className="text-sm font-medium text-neutral-900 flex items-center gap-1">
+                      <Users className="w-3.5 h-3.5 text-neutral-400" /> Guided
+                      Cohort
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link
+                    to="/explore"
+                    className="h-11 px-8 rounded-full text-sm font-medium transition-all bg-neutral-900 text-white hover:bg-neutral-800 shadow-sm flex items-center justify-center gap-2 hover:scale-105 active:scale-95"
+                  >
+                    Join Cohort
+                  </Link>
+                  <button className="h-11 px-6 rounded-full text-sm font-medium transition-all border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50 shadow-sm flex items-center justify-center gap-2">
+                    View Curriculum
+                  </button>
+                </div>
+              </div>
+              {/* Visual mockup */}
+              <div className="w-full lg:w-[380px] aspect-[4/3] rounded-2xl bg-neutral-50 border border-neutral-200 relative overflow-hidden group order-1 lg:order-2 shadow-sm">
+                <div className="absolute inset-0 p-6 flex flex-col gap-3">
+                  <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-neutral-100 shadow-sm">
+                    <div className="w-6 h-6 rounded-full bg-neutral-900 text-white flex items-center justify-center text-[10px] font-medium">
+                      1
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-neutral-900">
+                        The BLUF Principle
+                      </p>
+                      <p className="text-[10px] text-neutral-500">Day 1 • 12 mins</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-neutral-100 shadow-sm">
+                    <div className="w-6 h-6 rounded-full bg-white border border-neutral-200 text-neutral-400 flex items-center justify-center text-[10px] font-medium">
+                      2
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-neutral-700">
+                        Structuring the Memo
+                      </p>
+                      <p className="text-[10px] text-neutral-400">Day 2 • 15 mins</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-neutral-50/50 rounded-xl border border-neutral-100">
+                    <div className="w-6 h-6 rounded-full bg-transparent flex items-center justify-center text-neutral-300">
+                      <Lock className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <div className="w-24 h-2.5 bg-neutral-200 rounded-full mb-1.5" />
+                      <div className="w-16 h-2 bg-neutral-100 rounded-full" />
                     </div>
                   </div>
                 </div>
-
-                <div className="flex items-center gap-3 p-3 bg-neutral-50/80 rounded-xl border border-neutral-100">
-                  <div className="w-7 h-7 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-300">
-                    <iconify-icon icon="solar:lock-keyhole-linear" stroke-width="1.5" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="w-28 h-2.5 bg-neutral-200 rounded-full mb-1.5" />
-                    <div className="w-16 h-2 bg-neutral-100 rounded-full" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom hint strip */}
-              <div className="flex items-center justify-between gap-3 pt-4">
-                <div>
-                  <p className="text-[10px] uppercase tracking-wider text-neutral-400 mb-1">
-                    Cohort rhythm
-                  </p>
-                  <p className="text-sm font-medium text-neutral-900">
-                    Daily path + accountability
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 text-[11px] text-neutral-500">
-                  <span className="w-2 h-2 rounded-full bg-neutral-900" />
-                  Live
-                </div>
+                <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
               </div>
             </div>
-
-            <div className="absolute bottom-0 inset-x-0 h-20 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
-          </div>
-        </div>
-      </div>
-    </Reveal>
-        </div>
-      </div>
+          </Reveal>
         </div>
       </header>
 
@@ -363,7 +265,46 @@ function HomePage() {
         </Reveal>
       </section>
 
-      <CohortsSection />
+      <section id="cohorts" className="py-24 px-6 relative bg-[#FAFAFA]">
+        <Reveal className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-neutral-900 mb-2">
+                Featured cohorts.
+              </h2>
+              <p className="text-neutral-500 text-sm font-light">
+                Hand-picked paths our community loves most.
+              </p>
+            </div>
+            <Link
+              to="/explore"
+              className="text-sm font-medium text-neutral-900 flex items-center gap-1 hover:gap-2 transition-all"
+            >
+              Browse all <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {getFeaturedCohorts().map((cohort) => (
+              <Link key={cohort.id} to="/cohort/$cohortId" params={{ cohortId: cohort.id }}>
+                <CohortPreviewCard
+                  badge="Featured"
+                  badgeClass="bg-neutral-900 text-white"
+                  icon={<span className="text-3xl">{cohort.thumbnailEmoji}</span>}
+                  tags={cohort.tags.slice(0, 3)}
+                  title={cohort.title}
+                  desc={cohort.description}
+                  progressLabel={formatViews(cohort.views)}
+                  progressDetail={`${cohort.avgProgress}% avg`}
+                  progressPct={cohort.avgProgress}
+                  members={cohort.members >= 1000 ? `${(cohort.members / 1000).toFixed(1)}k members` : `${cohort.members} members`}
+                  cta="View Path"
+                />
+              </Link>
+            ))}
+          </div>
+        </Reveal>
+      </section>
 
       {/* ── MICROLEARNING MODE ── */}
       <section id="platform" className="py-32 px-6 border-t border-neutral-200 relative bg-white overflow-hidden">
@@ -582,93 +523,6 @@ function HomePage() {
 }
 
 /* ── Sub-components ── */
-
-function CohortsSection() {
-  const [activeCategory, setActiveCategory] = useState<CohortCategory | "All Topics">("All Topics");
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = useState(false);
-
-  const filteredCohorts = (activeCategory === "All Topics"
-    ? allCohortData
-    : allCohortData.filter((c) => c.category === activeCategory)
-  ).slice(0, 5);
-
-  const categories: Array<CohortCategory | "All Topics"> = ["All Topics", ...COHORT_CATEGORIES];
-
-  // Infinite auto-scroll: when reaching the midpoint (duplicate), reset to start
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const interval = setInterval(() => {
-      if (isPaused) return;
-      el.scrollLeft += 0.5;
-      // When we've scrolled past the first set of buttons, jump back seamlessly
-      if (el.scrollLeft >= el.scrollWidth / 2) {
-        el.scrollLeft = 0;
-      }
-    }, 30);
-    return () => clearInterval(interval);
-  }, [isPaused]);
-
-  return (
-    <section id="cohorts" className="py-24 px-6 relative bg-[#FAFAFA]">
-      <Reveal className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-neutral-900 mb-2">
-              Discover active cohorts.
-            </h2>
-            <p className="text-neutral-500 text-sm font-light">
-              Hundreds of communities are learning right now. Find your group.
-            </p>
-          </div>
-          <div
-            ref={scrollRef}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-            className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          >
-            {/* Duplicate categories for seamless infinite scroll */}
-            {[...categories, ...categories].map((cat, i) => (
-              <button
-                key={`${cat}-${i}`}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-2 text-xs font-medium rounded-full shrink-0 transition-colors ${
-                  activeCategory === cat
-                    ? "bg-white border border-neutral-200 text-neutral-900 shadow-sm"
-                    : "text-neutral-500 hover:text-neutral-900"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCohorts.map((cohort) => (
-            <Link key={cohort.id} to="/cohort/$cohortId" params={{ cohortId: cohort.id }}>
-              <CohortPreviewCard
-                badge={cohort.featured ? "Featured" : cohort.category}
-                badgeClass={cohort.featured ? "bg-neutral-900 text-white" : "bg-white text-neutral-600 border border-neutral-200"}
-                icon={<span className="text-3xl">{cohort.thumbnailEmoji}</span>}
-                tags={[cohort.category, ...cohort.tags.slice(0, 2)]}
-                title={cohort.title}
-                desc={cohort.description}
-                progressLabel={formatViews(cohort.views)}
-                progressDetail={`${cohort.avgProgress}% avg`}
-                progressPct={cohort.avgProgress}
-                members={cohort.members >= 1000 ? `${(cohort.members / 1000).toFixed(1)}k members` : `${cohort.members} members`}
-                cta="View Path"
-              />
-            </Link>
-          ))}
-        </div>
-      </Reveal>
-    </section>
-  );
-}
 
 function CohortPreviewCard({
   badge,
