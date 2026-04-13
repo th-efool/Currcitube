@@ -1,6 +1,8 @@
+import { useMemo, useRef, useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/Reveal";
-import { getFeaturedCohorts, formatViews } from "@/data";
+import { cohorts, formatViews, getCohortsByCategory } from "@/data";
+import { COHORT_CATEGORIES, type CohortCategory } from "@/domain/cohort/cohort.types";
 import {
   Layers,
   ArrowRight,
@@ -197,41 +199,72 @@ function HomePage() {
                 </div>
               </div>
               {/* Visual mockup */}
-              <div className="w-full lg:w-[380px] aspect-[4/3] rounded-2xl bg-neutral-50 border border-neutral-200 relative overflow-hidden group order-1 lg:order-2 shadow-sm">
-                <div className="absolute inset-0 p-6 flex flex-col gap-3">
-                  <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-neutral-100 shadow-sm">
-                    <div className="w-6 h-6 rounded-full bg-neutral-900 text-white flex items-center justify-center text-[10px] font-medium">
-                      1
+              <div className="w-full lg:w-[380px] aspect-[4/3] rounded-2xl bg-gradient-to-br from-neutral-50 via-white to-amber-50/40 border border-neutral-200 relative overflow-hidden group order-1 lg:order-2 shadow-sm">
+                <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-amber-100/40 blur-2xl animate-[pulse_5s_ease-in-out_infinite]" />
+                <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-emerald-100/30 blur-2xl animate-[pulse_6s_ease-in-out_infinite]" />
+
+                <div className="absolute inset-0 p-5 md:p-6 flex flex-col gap-3">
+                  <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-emerald-100 shadow-sm">
+                    <div className="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-sm">
+                      <CheckCheck className="w-3.5 h-3.5" />
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <p className="text-xs font-medium text-neutral-900">
                         The BLUF Principle
                       </p>
-                      <p className="text-[10px] text-neutral-500">Day 1 • 12 mins</p>
+                      <p className="text-[10px] text-neutral-500">Day 1 / 12 mins</p>
                     </div>
+                    <span className="text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                      Done
+                    </span>
                   </div>
-                  <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-neutral-100 shadow-sm">
-                    <div className="w-6 h-6 rounded-full bg-white border border-neutral-200 text-neutral-400 flex items-center justify-center text-[10px] font-medium">
+
+                  <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-amber-200/70 shadow-sm ring-1 ring-amber-100/70">
+                    <div className="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center text-[10px] font-semibold shadow-sm animate-live-pulse">
                       2
                     </div>
-                    <div>
-                      <p className="text-xs font-medium text-neutral-700">
+                    <div className="flex-1">
+                      <p className="text-xs font-medium text-neutral-900">
                         Structuring the Memo
                       </p>
-                      <p className="text-[10px] text-neutral-400">Day 2 • 15 mins</p>
+                      <div className="flex items-center gap-2 mt-1.5">
+                        <div className="flex-1 h-1 bg-neutral-100 rounded-full overflow-hidden">
+                          <div className="h-full w-[60%] bg-amber-400 rounded-full" />
+                        </div>
+                        <p className="text-[9px] font-semibold text-amber-600">60%</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-3 bg-neutral-50/50 rounded-xl border border-neutral-100">
-                    <div className="w-6 h-6 rounded-full bg-transparent flex items-center justify-center text-neutral-300">
+
+                  <div className="flex items-center gap-3 p-3 bg-neutral-50/85 rounded-xl border border-neutral-100">
+                    <div className="w-7 h-7 rounded-full bg-white border border-neutral-200/80 flex items-center justify-center text-neutral-300">
                       <Lock className="w-3.5 h-3.5" />
                     </div>
                     <div>
-                      <div className="w-24 h-2.5 bg-neutral-200 rounded-full mb-1.5" />
+                      <div className="w-28 h-2.5 bg-neutral-200/90 rounded-full mb-1.5" />
                       <div className="w-16 h-2 bg-neutral-100 rounded-full" />
                     </div>
                   </div>
+
+                  <div className="flex items-center gap-3 p-3 bg-white/50 rounded-xl border border-white/80 opacity-70">
+                    <div className="w-7 h-7 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-300">
+                      <Lock className="w-3 h-3" />
+                    </div>
+                    <div>
+                      <div className="w-20 h-2.5 bg-neutral-100 rounded-full mb-1.5" />
+                      <div className="w-12 h-2 bg-white rounded-full" />
+                    </div>
+                  </div>
                 </div>
-                <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+
+                <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm border border-neutral-200 shadow-sm">
+                  <div className="w-2 h-2 rounded-full bg-amber-400 animate-live-pulse" />
+                  <span className="text-[10px] font-semibold text-neutral-900">
+                    5 day streak
+                  </span>
+                </div>
+
+                <div className="absolute bottom-0 inset-x-0 h-20 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
               </div>
             </div>
           </Reveal>
@@ -265,46 +298,7 @@ function HomePage() {
         </Reveal>
       </section>
 
-      <section id="cohorts" className="py-24 px-6 relative bg-[#FAFAFA]">
-        <Reveal className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-neutral-900 mb-2">
-                Featured cohorts.
-              </h2>
-              <p className="text-neutral-500 text-sm font-light">
-                Hand-picked paths our community loves most.
-              </p>
-            </div>
-            <Link
-              to="/explore"
-              className="text-sm font-medium text-neutral-900 flex items-center gap-1 hover:gap-2 transition-all"
-            >
-              Browse all <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {getFeaturedCohorts().map((cohort) => (
-              <Link key={cohort.id} to="/cohort/$cohortId" params={{ cohortId: cohort.id }}>
-                <CohortPreviewCard
-                  badge="Featured"
-                  badgeClass="bg-neutral-900 text-white"
-                  icon={<span className="text-3xl">{cohort.thumbnailEmoji}</span>}
-                  tags={cohort.tags.slice(0, 3)}
-                  title={cohort.title}
-                  desc={cohort.description}
-                  progressLabel={formatViews(cohort.views)}
-                  progressDetail={`${cohort.avgProgress}% avg`}
-                  progressPct={cohort.avgProgress}
-                  members={cohort.members >= 1000 ? `${(cohort.members / 1000).toFixed(1)}k members` : `${cohort.members} members`}
-                  cta="View Path"
-                />
-              </Link>
-            ))}
-          </div>
-        </Reveal>
-      </section>
+      <CohortsSection />
 
       {/* ── MICROLEARNING MODE ── */}
       <section id="platform" className="py-32 px-6 border-t border-neutral-200 relative bg-white overflow-hidden">
@@ -611,6 +605,120 @@ function CohortPreviewCard({
   );
 }
 
+function CohortsSection() {
+  const [activeCategory, setActiveCategory] = useState<CohortCategory | "All Topics">("All Topics");
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const categories: Array<CohortCategory | "All Topics"> = ["All Topics", ...COHORT_CATEGORIES];
+
+  const filteredCohorts = useMemo(() => {
+    const base =
+      activeCategory === "All Topics"
+        ? cohorts
+        : getCohortsByCategory(activeCategory);
+
+    return [...base]
+      .sort((a, b) => {
+        const featuredDelta = Number(Boolean(b.featured)) - Number(Boolean(a.featured));
+        if (featuredDelta !== 0) return featuredDelta;
+        return b.views - a.views;
+      })
+      .slice(0, 6);
+  }, [activeCategory]);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const interval = window.setInterval(() => {
+      if (isPaused) return;
+      el.scrollLeft += 0.5;
+      if (el.scrollLeft >= el.scrollWidth / 2) {
+        el.scrollLeft = 0;
+      }
+    }, 30);
+
+    return () => window.clearInterval(interval);
+  }, [isPaused]);
+
+  return (
+    <section id="cohorts" className="py-24 px-6 relative bg-[#FAFAFA]">
+      <Reveal className="max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-6">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-neutral-900 mb-2">
+              Featured cohorts.
+            </h2>
+            <p className="text-neutral-500 text-sm font-light max-w-lg">
+              Hand-picked paths our community loves most, now grouped by topic so
+              it feels easier to browse.
+            </p>
+          </div>
+          <Link
+            to="/explore"
+            className="text-sm font-medium text-neutral-900 flex items-center gap-1 hover:gap-2 transition-all"
+          >
+            Browse all <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="surface-panel rounded-[2rem] p-3 md:p-4 mb-8 overflow-hidden">
+          <div
+            ref={scrollRef}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            className="flex items-center gap-2 overflow-x-auto whitespace-nowrap pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {[...categories, ...categories].map((category, index) => (
+              <button
+                key={`${category}-${index}`}
+                type="button"
+                onClick={() => setActiveCategory(category)}
+                className={`shrink-0 rounded-full px-4 py-2 text-xs font-medium transition-all ${
+                  activeCategory === category
+                    ? "bg-neutral-900 text-white shadow-sm"
+                    : "bg-white text-neutral-500 border border-neutral-200 hover:text-neutral-900 hover:border-neutral-300"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredCohorts.map((cohort) => (
+            <Link key={cohort.id} to="/cohort/$cohortId" params={{ cohortId: cohort.id }}>
+              <CohortPreviewCard
+                badge={cohort.featured ? "Featured" : cohort.category}
+                badgeClass={
+                  cohort.featured
+                    ? "bg-neutral-900 text-white"
+                    : "bg-white text-neutral-600 border border-neutral-200"
+                }
+                icon={<span className="text-3xl">{cohort.thumbnailEmoji}</span>}
+                tags={[cohort.category, ...cohort.tags.slice(0, 2)]}
+                title={cohort.title}
+                desc={cohort.description}
+                progressLabel={formatViews(cohort.views)}
+                progressDetail={`${cohort.avgProgress}% avg`}
+                progressPct={cohort.avgProgress}
+                members={
+                  cohort.members >= 1000
+                    ? `${(cohort.members / 1000).toFixed(1)}k members`
+                    : `${cohort.members} members`
+                }
+                cta="View Path"
+              />
+            </Link>
+          ))}
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
 function TickerItem({
   dot,
   icon,
@@ -631,3 +739,4 @@ function TickerItem({
     </div>
   );
 }
+
