@@ -82,12 +82,68 @@ function LandingNav() {
 
 /* ─── Page Component ─── */
 function HomePage() {
+  type LessonStatus = "completed" | "in_progress" | "locked";
+
+  type FeaturedLessonState = {
+    id: string;
+    title: string;
+    lessonStatus: LessonStatus;
+    dayIndex: number;
+    durationMinutes: number;
+    progressPercent?: number;
+  };
+
+  const featuredLessonStates: FeaturedLessonState[] = [
+    {
+      id: "business-writing-1",
+      title: "The BLUF Principle",
+      lessonStatus: "completed",
+      dayIndex: 1,
+      durationMinutes: 12,
+    },
+    {
+      id: "business-writing-2",
+      title: "Structuring the Memo",
+      lessonStatus: "in_progress",
+      dayIndex: 2,
+      durationMinutes: 15,
+      progressPercent: 60,
+    },
+    {
+      id: "business-writing-3",
+      title: "Executive Summary Drills",
+      lessonStatus: "locked",
+      dayIndex: 3,
+      durationMinutes: 14,
+    },
+    {
+      id: "business-writing-4",
+      title: "Peer Review Workshop",
+      lessonStatus: "locked",
+      dayIndex: 4,
+      durationMinutes: 18,
+    },
+  ];
+
+  const completedLessons = featuredLessonStates.filter(
+    (lesson) => lesson.lessonStatus === "completed"
+  ).length;
+  const inProgressLesson = featuredLessonStates.find(
+    (lesson) => lesson.lessonStatus === "in_progress"
+  );
+  const courseProgressPercent = Math.round(
+    ((completedLessons + (inProgressLesson?.progressPercent ?? 0) / 100) /
+      featuredLessonStates.length) *
+      100
+  );
+  const streakCount = Math.max(1, Math.round(courseProgressPercent / 10));
+
   return (
     <div className="antialiased bg-[#FAFAFA] text-[#0A0A0A] overflow-x-hidden scroll-smooth">
       <LandingNav />
 
       {/* ── HERO ── */}
-      <header className="relative pt-32 pb-20 lg:pt-40 lg:pb-24 overflow-hidden flex flex-col items-center border-b border-neutral-200 bg-white">
+      <header className="relative pt-32 pb-20 overflow-hidden flex flex-col items-center border-b border-neutral-200 bg-white">
         <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-neutral-100 rounded-full blur-[100px] opacity-50 pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-neutral-50 rounded-full blur-[120px] opacity-60 pointer-events-none" />
 
@@ -127,7 +183,7 @@ function HomePage() {
                   </div>
                 </div>
                 <div className="hidden md:block w-px h-8 bg-neutral-200" />
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
                   <div className="flex -space-x-2">
                     <div className="w-6 h-6 rounded-full bg-neutral-200 border-2 border-white" />
                     <div className="w-6 h-6 rounded-full bg-neutral-300 border-2 border-white" />
@@ -141,7 +197,7 @@ function HomePage() {
                   </span>
                 </div>
               </div>
-              <div className="flex items-center gap-3 text-xs font-medium text-neutral-500">
+              <div className="flex items-center gap-4 text-xs font-medium text-neutral-500">
                 <span className="px-2.5 py-1 bg-white border border-neutral-200 rounded-md shadow-sm text-neutral-900">
                   Enrolling Now
                 </span>
@@ -150,7 +206,7 @@ function HomePage() {
             </div>
 
             {/* Body */}
-            <div className="p-6 md:p-8 flex flex-col lg:flex-row items-center gap-8 lg:gap-12 bg-white">
+            <div className="p-6 md:p-8 flex flex-col lg:flex-row items-center gap-6 lg:gap-8 bg-white">
               <div className="flex-1 w-full order-2 lg:order-1">
                 <h3 className="text-3xl md:text-4xl font-medium tracking-tight text-neutral-900 mb-3 leading-tight">
                   Clear Business Writing
@@ -186,7 +242,7 @@ function HomePage() {
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex flex-col sm:flex-row gap-4">
                   <Link
                     to="/explore"
                     className="h-11 px-8 rounded-full text-sm font-medium transition-all bg-neutral-900 text-white hover:bg-neutral-800 shadow-sm flex items-center justify-center gap-2 hover:scale-105 active:scale-95"
@@ -199,72 +255,99 @@ function HomePage() {
                 </div>
               </div>
               {/* Visual mockup */}
-              <div className="w-full lg:w-[380px] aspect-[4/3] rounded-2xl bg-gradient-to-br from-neutral-50 via-white to-amber-50/40 border border-neutral-200 relative overflow-hidden group order-1 lg:order-2 shadow-sm">
-                <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-amber-100/40 blur-2xl animate-[pulse_5s_ease-in-out_infinite]" />
-                <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-emerald-100/30 blur-2xl animate-[pulse_6s_ease-in-out_infinite]" />
-
-                <div className="absolute inset-0 p-5 md:p-6 flex flex-col gap-3">
-                  <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-emerald-100 shadow-sm">
-                    <div className="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-sm">
-                      <CheckCheck className="w-3.5 h-3.5" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-xs font-medium text-neutral-900">
-                        The BLUF Principle
-                      </p>
-                      <p className="text-[10px] text-neutral-500">Day 1 / 12 mins</p>
-                    </div>
-                    <span className="text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
-                      Done
-                    </span>
+              <div className="w-full lg:w-[380px] rounded-2xl border border-neutral-200 bg-neutral-50/70 p-4 md:p-6 order-1 lg:order-2 shadow-sm">
+                <div className="mb-4 rounded-xl border border-neutral-200 bg-white p-4 flex items-center justify-between">
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
+                      Course Progress
+                    </p>
+                    <p className="text-xs font-medium text-neutral-900">
+                      {courseProgressPercent}% complete
+                    </p>
                   </div>
+                  <div className="text-right">
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
+                      Course Streak
+                    </p>
+                    <p className="text-xs font-medium text-neutral-900">{streakCount}-day streak</p>
+                  </div>
+                </div>
 
-                  <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-amber-200/70 shadow-sm ring-1 ring-amber-100/70">
-                    <div className="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center text-[10px] font-semibold shadow-sm animate-live-pulse">
-                      2
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-xs font-medium text-neutral-900">
-                        Structuring the Memo
-                      </p>
-                      <div className="flex items-center gap-2 mt-1.5">
-                        <div className="flex-1 h-1 bg-neutral-100 rounded-full overflow-hidden">
-                          <div className="h-full w-[60%] bg-amber-400 rounded-full" />
+                <div className="flex flex-col gap-4">
+                  {featuredLessonStates.map((lesson) => {
+                    const isCompleted = lesson.lessonStatus === "completed";
+                    const isInProgress = lesson.lessonStatus === "in_progress";
+                    const isLocked = lesson.lessonStatus === "locked";
+
+                    const statusLabel = isCompleted
+                      ? "Completed"
+                      : isInProgress
+                        ? "In Progress"
+                        : "Locked";
+
+                    const statusStyles = isCompleted
+                      ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
+                      : isInProgress
+                        ? "bg-amber-100 text-amber-700 border border-amber-200"
+                        : "bg-neutral-100 text-neutral-600 border border-neutral-200";
+
+                    return (
+                      <div
+                        key={lesson.id}
+                          className={`rounded-xl border p-4 ${
+                          isLocked
+                            ? "bg-neutral-100/70 border-neutral-200"
+                            : "bg-white border-neutral-200 shadow-sm"
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-4 mb-2">
+                          <span
+                            className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded-full ${statusStyles}`}
+                          >
+                            {statusLabel}
+                          </span>
+                          {isLocked && (
+                            <Lock className="w-3.5 h-3.5 text-neutral-400 mt-1" />
+                          )}
                         </div>
-                        <p className="text-[9px] font-semibold text-amber-600">60%</p>
+
+                        <p
+                          className={`text-sm font-medium ${
+                            isLocked ? "text-neutral-500" : "text-neutral-900"
+                          }`}
+                        >
+                          {lesson.title}
+                        </p>
+
+                        {isInProgress && (
+                          <div className="mt-2.5">
+                            <div className="flex items-center gap-2 mb-1.5">
+                              <div className="flex-1 h-1.5 bg-neutral-100 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-amber-500 rounded-full"
+                                  style={{ width: `${lesson.progressPercent ?? 0}%` }}
+                                />
+                              </div>
+                              <span className="text-[10px] font-semibold text-amber-700">
+                                {lesson.progressPercent ?? 0}%
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-neutral-500">
+                              {lesson.durationMinutes} min
+                            </p>
+                          </div>
+                        )}
+
+                        {!isLocked && (
+                          <p className="mt-2 text-[10px] text-neutral-500">
+                            Day {lesson.dayIndex}
+                            {isInProgress ? ` • ${lesson.durationMinutes} min` : ""}
+                          </p>
+                        )}
                       </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 p-3 bg-neutral-50/85 rounded-xl border border-neutral-100">
-                    <div className="w-7 h-7 rounded-full bg-white border border-neutral-200/80 flex items-center justify-center text-neutral-300">
-                      <Lock className="w-3.5 h-3.5" />
-                    </div>
-                    <div>
-                      <div className="w-28 h-2.5 bg-neutral-200/90 rounded-full mb-1.5" />
-                      <div className="w-16 h-2 bg-neutral-100 rounded-full" />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 p-3 bg-white/50 rounded-xl border border-white/80 opacity-70">
-                    <div className="w-7 h-7 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-300">
-                      <Lock className="w-3 h-3" />
-                    </div>
-                    <div>
-                      <div className="w-20 h-2.5 bg-neutral-100 rounded-full mb-1.5" />
-                      <div className="w-12 h-2 bg-white rounded-full" />
-                    </div>
-                  </div>
+                    );
+                  })}
                 </div>
-
-                <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm border border-neutral-200 shadow-sm">
-                  <div className="w-2 h-2 rounded-full bg-amber-400 animate-live-pulse" />
-                  <span className="text-[10px] font-semibold text-neutral-900">
-                    5 day streak
-                  </span>
-                </div>
-
-                <div className="absolute bottom-0 inset-x-0 h-20 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
               </div>
             </div>
           </Reveal>
@@ -272,9 +355,9 @@ function HomePage() {
       </header>
 
       {/* ── HOW IT WORKS ── */}
-      <section className="py-20 border-b border-neutral-200 bg-white">
+      <section className="py-24 border-b border-neutral-200 bg-white">
         <Reveal className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {[
               { icon: Search, title: "1. Find a Cohort", desc: "Browse hundreds of active learning paths across various disciplines." },
               { icon: CalendarDays, title: "2. Commit to a Pace", desc: "Choose how much time you can dedicate daily. The system builds your schedule." },
@@ -301,9 +384,9 @@ function HomePage() {
       <CohortsSection />
 
       {/* ── MICROLEARNING MODE ── */}
-      <section id="platform" className="py-32 px-6 border-t border-neutral-200 relative bg-white overflow-hidden">
+      <section id="platform" className="py-20 px-6 border-t border-neutral-200 relative bg-white overflow-hidden">
         <Reveal className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
             <div className="max-w-xl mx-auto lg:mx-0">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-50 border border-neutral-200 text-[10px] font-semibold uppercase tracking-widest text-neutral-600 mb-6 shadow-sm">
                 <Infinity className="w-3.5 h-3.5 text-neutral-500" />
@@ -377,7 +460,7 @@ function HomePage() {
                       { state: 3, seg: "6 of 24", dur: "2 min", title: "Color Theory", desc: "Building accessible and engaging palettes." },
                       { state: 4, seg: "4 of 24", dur: "3 min", title: "Visual Hierarchy", desc: "Learn how to naturally guide the user's eye." },
                     ].map((card, i) => (
-                      <div key={i} className="flex items-center px-6 gap-5 w-full relative">
+                      <div key={i} className="flex items-center px-6 gap-6 w-full relative">
                         <div className="w-2.5 h-2.5 rounded-full bg-neutral-300 border-[1.5px] border-[#FAFAFA] shrink-0 relative z-10 hidden sm:block" />
                         <div
                           className={`c-state-${card.state} flex-1 bg-white rounded-2xl border border-neutral-200 shadow-sm p-4 flex flex-col justify-between`}
@@ -459,7 +542,7 @@ function HomePage() {
       </section>
 
       {/* ── FINAL CTA ── */}
-      <section className="py-32 px-6 relative overflow-hidden bg-white border-t border-neutral-200">
+      <section className="py-16 px-6 relative overflow-hidden bg-white border-t border-neutral-200">
         <Reveal className="max-w-2xl mx-auto text-center relative z-10">
           <div className="w-16 h-16 rounded-2xl bg-neutral-50 border border-neutral-200 flex items-center justify-center mx-auto mb-8 shadow-sm">
             <Users className="w-6 h-6 text-neutral-900" />
@@ -555,7 +638,7 @@ function CohortPreviewCard({
         <div className="group-hover:scale-105 transition-transform duration-500">
           {icon}
         </div>
-        <div className="flex items-center gap-3 text-[10px] font-medium text-neutral-500">
+        <div className="flex items-center gap-4 text-[10px] font-medium text-neutral-500">
           {tags.map((t) => (
             <span key={t} className="px-2 py-1 bg-white rounded-md border border-neutral-200 shadow-sm">
               {t}
@@ -625,9 +708,9 @@ function CohortsSection() {
   }, [activeCategory]);
 
   return (
-    <section id="cohorts" className="py-24 px-6 relative bg-[#FAFAFA]">
+    <section id="cohorts" className="py-20 px-6 relative bg-[#FAFAFA]">
       <Reveal className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-5">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-6">
           <div>
             <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-neutral-900 mb-2">
               Featured cohorts.
@@ -647,7 +730,7 @@ function CohortsSection() {
           </div>
         </div>
 
-        <div className="surface-panel rounded-[2rem] p-3 md:p-4 mb-8 overflow-hidden ml-auto w-full lg:max-w-[760px]">
+        <div className="surface-panel rounded-[2rem] p-4 md:p-6 mb-8 overflow-hidden ml-auto w-full lg:max-w-[760px]">
           <div
             className="flex items-center gap-2 overflow-x-auto whitespace-nowrap pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
