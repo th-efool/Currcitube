@@ -255,8 +255,8 @@ function HomePage() {
                 </div>
               </div>
               {/* Visual mockup */}
-              <div className="w-full lg:w-[380px] rounded-2xl border border-neutral-200 bg-neutral-50/70 p-4 md:p-6 order-1 lg:order-2 shadow-sm">
-                <div className="mb-4 rounded-xl border border-neutral-200 bg-white p-4 flex items-center justify-between">
+              <div className="w-full lg:w-[380px] max-h-[340px] overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50/70 p-4 order-1 lg:order-2 shadow-sm">
+                <div className="mb-3 rounded-xl border border-neutral-200 bg-white p-3 flex items-center justify-between gap-3">
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
                       Course Progress
@@ -273,7 +273,7 @@ function HomePage() {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-3">
                   {featuredLessonStates.map((lesson) => {
                     const isCompleted = lesson.lessonStatus === "completed";
                     const isInProgress = lesson.lessonStatus === "in_progress";
@@ -294,13 +294,13 @@ function HomePage() {
                     return (
                       <div
                         key={lesson.id}
-                          className={`rounded-xl border p-4 ${
+                          className={`rounded-xl border p-3 ${
                           isLocked
                             ? "bg-neutral-100/70 border-neutral-200"
                             : "bg-white border-neutral-200 shadow-sm"
                         }`}
                       >
-                        <div className="flex items-start justify-between gap-4 mb-2">
+                        <div className="flex items-center justify-between gap-3 mb-1.5">
                           <span
                             className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded-full ${statusStyles}`}
                           >
@@ -312,7 +312,7 @@ function HomePage() {
                         </div>
 
                         <p
-                          className={`text-sm font-medium ${
+                          className={`text-xs font-medium leading-tight ${
                             isLocked ? "text-neutral-500" : "text-neutral-900"
                           }`}
                         >
@@ -320,9 +320,9 @@ function HomePage() {
                         </p>
 
                         {isInProgress && (
-                          <div className="mt-2.5">
-                            <div className="flex items-center gap-2 mb-1.5">
-                              <div className="flex-1 h-1.5 bg-neutral-100 rounded-full overflow-hidden">
+                          <div className="mt-1.5">
+                            <div className="flex items-center gap-2 mb-1">
+                              <div className="flex-1 h-1 bg-neutral-100 rounded-full overflow-hidden">
                                 <div
                                   className="h-full bg-amber-500 rounded-full"
                                   style={{ width: `${lesson.progressPercent ?? 0}%` }}
@@ -339,7 +339,7 @@ function HomePage() {
                         )}
 
                         {!isLocked && (
-                          <p className="mt-2 text-[10px] text-neutral-500">
+                          <p className="mt-1.5 text-[10px] text-neutral-500">
                             Day {lesson.dayIndex}
                             {isInProgress ? ` • ${lesson.durationMinutes} min` : ""}
                           </p>
