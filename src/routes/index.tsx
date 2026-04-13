@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/Reveal";
 import { cohorts, formatViews, getCohortsByCategory } from "@/data";
@@ -607,9 +607,6 @@ function CohortPreviewCard({
 
 function CohortsSection() {
   const [activeCategory, setActiveCategory] = useState<CohortCategory | "All Topics">("All Topics");
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = useState(false);
-
   const categories: Array<CohortCategory | "All Topics"> = ["All Topics", ...COHORT_CATEGORIES];
 
   const filteredCohorts = useMemo(() => {
@@ -627,25 +624,10 @@ function CohortsSection() {
       .slice(0, 6);
   }, [activeCategory]);
 
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const interval = window.setInterval(() => {
-      if (isPaused) return;
-      el.scrollLeft += 0.5;
-      if (el.scrollLeft >= el.scrollWidth / 2) {
-        el.scrollLeft = 0;
-      }
-    }, 30);
-
-    return () => window.clearInterval(interval);
-  }, [isPaused]);
-
   return (
     <section id="cohorts" className="py-24 px-6 relative bg-[#FAFAFA]">
       <Reveal className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-6">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-5">
           <div>
             <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-neutral-900 mb-2">
               Featured cohorts.
@@ -655,24 +637,23 @@ function CohortsSection() {
               it feels easier to browse.
             </p>
           </div>
-          <Link
-            to="/explore"
-            className="text-sm font-medium text-neutral-900 flex items-center gap-1 hover:gap-2 transition-all"
-          >
-            Browse all <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+          <div className="flex items-center justify-between lg:justify-end gap-4 w-full lg:w-auto">
+            <Link
+              to="/explore"
+              className="text-sm font-medium text-neutral-900 flex items-center gap-1 hover:gap-2 transition-all shrink-0"
+            >
+              Browse all <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
 
-        <div className="surface-panel rounded-[2rem] p-3 md:p-4 mb-8 overflow-hidden">
+        <div className="surface-panel rounded-[2rem] p-3 md:p-4 mb-8 overflow-hidden ml-auto w-full lg:max-w-[760px]">
           <div
-            ref={scrollRef}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
             className="flex items-center gap-2 overflow-x-auto whitespace-nowrap pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
-            {[...categories, ...categories].map((category, index) => (
+            {categories.map((category) => (
               <button
-                key={`${category}-${index}`}
+                key={category}
                 type="button"
                 onClick={() => setActiveCategory(category)}
                 className={`shrink-0 rounded-full px-4 py-2 text-xs font-medium transition-all ${
