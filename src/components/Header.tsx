@@ -29,6 +29,13 @@ export function Header() {
             Dashboard
           </Link>
           <Link
+            to="/learn"
+            className="px-3 py-2 rounded-lg text-sm font-medium text-neutral-500 hover:text-neutral-900 transition-colors"
+            activeProps={{ className: "px-3 py-2 rounded-lg text-sm font-medium text-neutral-900 bg-neutral-100" }}
+          >
+            Microlearning
+          </Link>
+          <Link
             to="/cohorts"
             className="px-3 py-2 rounded-lg text-sm font-medium text-neutral-500 hover:text-neutral-900 transition-colors"
             activeProps={{ className: "px-3 py-2 rounded-lg text-sm font-medium text-neutral-900 bg-neutral-100" }}
