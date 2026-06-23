@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LearnRouteImport } from './routes/learn'
+import { Route as PolicyRouteImport } from './routes/policy'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CreateRouteImport } from './routes/create'
@@ -19,6 +20,11 @@ import { Route as LessonLessonIdRouteImport } from './routes/lesson.$lessonId'
 import { Route as FocusLessonIdRouteImport } from './routes/focus.$lessonId'
 import { Route as CohortCohortIdRouteImport } from './routes/cohort.$cohortId'
 
+const PolicyRoute = PolicyRouteImport.update({
+  id: '/policy',
+  path: '/policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LearnRoute = LearnRouteImport.update({
   id: '/learn',
   path: '/learn',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/explore': typeof ExploreRoute
   '/learn': typeof LearnRoute
+  '/policy': typeof PolicyRoute
   '/cohort/$cohortId': typeof CohortCohortIdRoute
   '/focus/$lessonId': typeof FocusLessonIdRoute
   '/lesson/$lessonId': typeof LessonLessonIdRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/explore': typeof ExploreRoute
   '/learn': typeof LearnRoute
+  '/policy': typeof PolicyRoute
   '/cohort/$cohortId': typeof CohortCohortIdRoute
   '/focus/$lessonId': typeof FocusLessonIdRoute
   '/lesson/$lessonId': typeof LessonLessonIdRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/explore': typeof ExploreRoute
   '/learn': typeof LearnRoute
+  '/policy': typeof PolicyRoute
   '/cohort/$cohortId': typeof CohortCohortIdRoute
   '/focus/$lessonId': typeof FocusLessonIdRoute
   '/lesson/$lessonId': typeof LessonLessonIdRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/explore'
     | '/learn'
+    | '/policy'
     | '/cohort/$cohortId'
     | '/focus/$lessonId'
     | '/lesson/$lessonId'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/explore'
     | '/learn'
+    | '/policy'
     | '/cohort/$cohortId'
     | '/focus/$lessonId'
     | '/lesson/$lessonId'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/explore'
     | '/learn'
+    | '/policy'
     | '/cohort/$cohortId'
     | '/focus/$lessonId'
     | '/lesson/$lessonId'
@@ -142,6 +154,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   ExploreRoute: typeof ExploreRoute
   LearnRoute: typeof LearnRoute
+  PolicyRoute: typeof PolicyRoute
   CohortCohortIdRoute: typeof CohortCohortIdRoute
   FocusLessonIdRoute: typeof FocusLessonIdRoute
   LessonLessonIdRoute: typeof LessonLessonIdRoute
@@ -149,6 +162,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/policy': {
+      id: '/policy'
+      path: '/policy'
+      fullPath: '/policy'
+      preLoaderRoute: typeof PolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/learn': {
       id: '/learn'
       path: '/learn'
@@ -222,6 +242,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   ExploreRoute: ExploreRoute,
   LearnRoute: LearnRoute,
+  PolicyRoute: PolicyRoute,
   CohortCohortIdRoute: CohortCohortIdRoute,
   FocusLessonIdRoute: FocusLessonIdRoute,
   LessonLessonIdRoute: LessonLessonIdRoute,
