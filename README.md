@@ -1,5 +1,13 @@
 # Currcitube
 
+![Prototype](https://img.shields.io/badge/status-prototype-orange)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite&logoColor=white)
+![TanStack](https://img.shields.io/badge/TanStack-Start%20%2F%20Router-FF4154)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
+![Demo](https://img.shields.io/badge/demo-live-brightgreen?logo=vercel&logoColor=white)
+
 **Turn the content you save into learning you actually finish.**
 
 Currcitube is a cohort-based microlearning concept designed to help people make steady progress through long-form learning content. Instead of leaving YouTube playlists, lecture series, and skill-building videos in a backlog, learners follow structured paths, work in short sessions, and track their progress over time.
