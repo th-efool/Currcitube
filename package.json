@@ -42,7 +42,7 @@
     "@tailwindcss/vite": "^4.2.1",
     "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-router": "^1.168.0",
-    "@tanstack/react-start": "^1.167.14",
+    "@tanstack/react-start": "^1.168.60",
     "@tanstack/router-plugin": "^1.167.10",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -65,7 +65,8 @@
     "vaul": "^1.1.2",
     "vite-tsconfig-paths": "^6.0.2",
     "zod": "^3.24.2",
-    "nitro": "3.0.260903-beta"
+    "nitro": "3.0.260903-beta",
+    "@tanstack/start-server-core": "^1.169.39"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
